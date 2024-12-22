@@ -4,6 +4,7 @@ import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import io.papermc.paper.plugin.bootstrap.PluginProviderContext;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
+import net.strokkur.populus.commands.PopulusCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,11 +13,9 @@ public class PopulusBootstrap implements PluginBootstrap {
 
     @Override
     public void bootstrap(@NotNull BootstrapContext bootstrapContext) {
-        bootstrapContext.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
-
-            // Registers command here
-
-        });
+        bootstrapContext.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
+            event -> new PopulusCommand().register(event.registrar())
+        );
     }
 
     @Override
