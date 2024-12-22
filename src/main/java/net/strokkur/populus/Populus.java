@@ -24,15 +24,21 @@
 package net.strokkur.populus;
 
 import net.kyori.adventure.text.logger.slf4j.ComponentLogger;
+import net.luckperms.api.LuckPerms;
+import net.luckperms.api.LuckPermsProvider;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;
 
 public final class Populus extends JavaPlugin {
-    private static Populus instance;
-    private static Path directory;
-    private static ComponentLogger logger;
+    private static Populus instance = null;
+    private static Path directory = null;
+    private static ComponentLogger logger = null;
+    private static LuckPerms luckPerms = null;
 
     public static @NotNull Populus instance() {
         if (instance == null) {
@@ -50,12 +56,16 @@ public final class Populus extends JavaPlugin {
         return directory;
     }
 
-    public static ComponentLogger logger() {
+    public static @NotNull ComponentLogger logger() {
         if (logger == null) {
             throw new RuntimeException("Tried to access plugin instance whilst plugin is disabled");
         }
 
         return logger;
+    }
+
+    public static @Nullable LuckPerms luckPerms() {
+        return luckPerms;
     }
 
     Populus(final Path directory, final ComponentLogger logger) {
@@ -72,7 +82,9 @@ public final class Populus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-
+        if (Bukkit.getPluginManager().getPlugin("LuckPerms") != null) {
+            Populus.luckPerms = LuckPermsProvider.get();
+        }
     }
 
     @Override

@@ -18,6 +18,7 @@ repositories {
 
 dependencies {
     paperweight.paperDevBundle("1.20.6-R0.1-SNAPSHOT")
+    compileOnly("net.luckperms:api:5.4")
 }
 
 tasks {
@@ -36,6 +37,10 @@ tasks {
 
     runServer {
         minecraftVersion("1.21.3")
+        downloadPlugins {
+            // LuckPerms
+            url("https://download.luckperms.net/1568/bukkit/loader/LuckPerms-Bukkit-5.4.151.jar")
+        }
     }
 }
 
