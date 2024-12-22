@@ -17,12 +17,14 @@ public class SubDebug implements IPopulusSubcommand {
     @Override
     public LiteralArgumentBuilder<CommandSourceStack> buildSubCommand() {
         return Commands.literal("debug")
+            .requires(ctx -> PermissionsUtil.hasParentedPermission(ctx.getSender(), "populus.debug"))
             .then(spawnNpc())
             .then(checkPermission());
     }
 
     private LiteralArgumentBuilder<CommandSourceStack> checkPermission() {
         return Commands.literal("check-perm")
+            .requires(ctx -> PermissionsUtil.hasParentedPermission(ctx.getSender(), "populus.debug.check-perm"))
             .then(Commands.argument("permission", StringArgumentType.string())
                 .executes(ctx -> {
                     final String permission = ctx.getArgument("permission", String.class);
@@ -39,6 +41,7 @@ public class SubDebug implements IPopulusSubcommand {
 
     private LiteralArgumentBuilder<CommandSourceStack> spawnNpc() {
         return Commands.literal("spawn-npc")
+            .requires(ctx -> PermissionsUtil.hasParentedPermission(ctx.getSender(), "populus.debug.spawn-npc"))
             .requires(ctx -> ctx.getExecutor() != null)
             .executes(ctx -> {
                 final Entity entity = ctx.getSource().getExecutor();

@@ -12,9 +12,9 @@ import org.jetbrains.annotations.NotNull;
 public class PopulusBootstrap implements PluginBootstrap {
 
     @Override
-    public void bootstrap(@NotNull BootstrapContext bootstrapContext) {
-        bootstrapContext.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
-            event -> new PopulusCommand().register(event.registrar())
+    public void bootstrap(@NotNull BootstrapContext context) {
+        context.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS,
+            event -> new PopulusCommand(context.getPluginMeta()).register(event.registrar())
         );
     }
 
