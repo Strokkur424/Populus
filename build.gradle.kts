@@ -4,6 +4,7 @@ plugins {
     id("java")
     id("io.papermc.paperweight.userdev") version "1.7.7"
     id("net.kyori.indra.licenser.spotless") version "3.1.3"
+    id("xyz.jpenilla.run-paper") version "2.3.1"
 }
 
 group = "net.strokkur"
@@ -31,6 +32,10 @@ tasks {
         filesMatching("paper-plugin.yml") {
             expand(props)
         }
+    }
+
+    runServer {
+        minecraftVersion("1.21.3")
     }
 }
 

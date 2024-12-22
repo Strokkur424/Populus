@@ -1,8 +1,11 @@
 name: Populus
 version: '0.1-DEV'
 main: net.strokkur.populus.Populus
+bootstrapper: net.strokkur.populus.PopulusBootstrap
 api-version: '1.20'
 prefix: Populus
 authors: [ Strokkur24 ]
 description: Paper-only NPC plugin
 website: https://github.com/Strokkur424/Populus
+default-perm: op
+load: POSTWORLD
