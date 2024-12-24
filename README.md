@@ -1,7 +1,7 @@
 # Populus
 This is a **work in progress** NPC plugin for advanced control over the behaviour of NPCs.
 
-> [!ERROR]
+> [!CAUTION]
 > Currently, the plugin **does not work**. It is still heavily in development and should not be used.
 
 ## Planned features
