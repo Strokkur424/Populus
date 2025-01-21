@@ -23,16 +23,27 @@
  */
 package net.strokkur.populus.commands;
 
+import com.destroystokyo.paper.profile.CraftPlayerProfile;
+import com.destroystokyo.paper.profile.PlayerProfile;
+import com.destroystokyo.paper.profile.ProfileProperty;
 import com.google.common.base.Preconditions;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.command.brigadier.argument.ArgumentTypes;
+import io.papermc.paper.command.brigadier.argument.resolvers.PlayerProfileListResolver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
+import net.strokkur.populus.Populus;
+import net.strokkur.populus.npc.PopulusNpc;
 import net.strokkur.populus.util.PermissionsUtil;
 import org.bukkit.entity.Entity;
+
+import java.util.Optional;
 
 @SuppressWarnings("UnstableApiUsage")
 public class SubDebug implements IPopulusSubcommand {
@@ -66,14 +77,23 @@ public class SubDebug implements IPopulusSubcommand {
         return Commands.literal("spawn-npc")
             .requires(ctx -> PermissionsUtil.hasParentedPermission(ctx.getSender(), "populus.debug.spawn-npc"))
             .requires(ctx -> ctx.getExecutor() != null)
-            .executes(ctx -> {
-                final Entity entity = ctx.getSource().getExecutor();
-                Preconditions.checkNotNull(entity, "Found no executing player!");
+            .then(Commands.argument("targetplayer", ArgumentTypes.playerProfiles())
+                .executes(ctx -> {
+                    final Entity entity = ctx.getSource().getExecutor();
+                    Preconditions.checkNotNull(entity, "Found no executing player!");
 
-                entity.sendRichMessage("<green>Just play it as if an NPC just spawned at your location :3");
+                    final PlayerProfile unresolved = ctx.getArgument("targetplayer", PlayerProfileListResolver.class).resolve(ctx.getSource()).stream().findFirst().orElseThrow();
+                    unresolved.update().thenAccept(playerProfile -> {
+                        final GameProfile gameProfile = CraftPlayerProfile.asAuthlib(playerProfile);
 
-                return Command.SINGLE_SUCCESS;
-            });
+                        Populus.logger().warn("Has no textures: {}", unresolved.getTextures().isEmpty());
+
+                        new PopulusNpc(entity.getLocation(), gameProfile);
+                        entity.sendRichMessage("<gold>Success! (hopefully >->)");
+                    });
+                    
+                    return Command.SINGLE_SUCCESS;
+                }));
     }
 
 }
