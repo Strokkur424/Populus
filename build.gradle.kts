@@ -2,7 +2,7 @@ import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
 plugins {
     id("java")
-    id("io.papermc.paperweight.userdev") version "1.7.7"
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
     id("net.kyori.indra.licenser.spotless") version "3.1.3"
     id("xyz.jpenilla.run-paper") version "2.3.1"
 }
@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    paperweight.paperDevBundle("1.20.6-R0.1-SNAPSHOT")
+    paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
     compileOnly("net.luckperms:api:5.4")
 }
 
@@ -36,7 +36,7 @@ tasks {
     }
 
     runServer {
-        minecraftVersion("1.21.3")
+        minecraftVersion("1.21.4")
         downloadPlugins {
             // LuckPerms
             url("https://download.luckperms.net/1568/bukkit/loader/LuckPerms-Bukkit-5.4.151.jar")
